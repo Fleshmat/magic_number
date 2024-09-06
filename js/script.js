@@ -51,7 +51,7 @@ document.getElementById('miForm').addEventListener('submit', function(event) {
         const validPassword = document.getElementById('pass');
         
         if (validEmail.value === "eventos18@gmail.com" && validPassword.value === "@Event321") {
-            window.open("https://fleshmat.github.io/curriculum_page/")
+            // window.location.href = 'https://fleshmat.github.io/curriculum_page/';
         } else {
             event.preventDefault();
             alert('Credenciales inválidas');
