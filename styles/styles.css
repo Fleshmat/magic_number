@@ -33,7 +33,7 @@ label {
 }
 
 input[type="email"],
-input[type="password"], input[type="text"] {
+input[type="password"], input[type="text"], input[type="number"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
@@ -82,67 +82,19 @@ input[type="password"], input[type="text"] {
     box-sizing: border-box;
 }
 
-.password-container {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-}
-
-#togglePassword {
-    position: absolute;
-    right: 0;
-    padding: 10px 15px;
-    border: none;
-    background-color: transparent;
-    color: #007BFF;
-    cursor: pointer;
-    font-size: 0.875em;
-}
-
-.logo{
-    width: 80%;
-}
-
-.social-login {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.social-login p {
-    margin-bottom: 10px;
-    font-size: 1em;
-    color: #666;
-}
-
-.google-btn, .facebook-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 1em;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    text-align: center;
-    font-family: Arial, sans-serif;
+.urgente {
+    color: red;
+    border: 2px solid red;
+    padding: 5px;
     font-weight: bold;
 }
 
-.google-btn {
-    background-color: #db4437;
-    color: white;
+.parpadeo {
+    animation: parpadeo 1s infinite;
 }
 
-.facebook-btn {
-    background-color: #4267B2;
-    color: white;
-}
-
-/* Al hacer hover sobre los botones */
-.google-btn:hover {
-    background-color: #c33d30;
-}
-
-.facebook-btn:hover {
-    background-color: #365899;
+@keyframes parpadeo {
+    0% { background-color: red; }
+    50% { background-color: yellow; }
+    100% { background-color: red; }
 }

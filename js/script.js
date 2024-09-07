@@ -1,82 +1,87 @@
-document.getElementById('miForm').addEventListener('submit', function(event) {
-    const passwordInput = document.getElementById('pass');
-    const passwordError = document.getElementById('passwordError');
+const magia = Math.floor(Math.random() * 100) + 1;
+let tiempoRestante = 20;
+let temporizador;  // Variable para almacenar el temporizador
+let parpadeoActivo = false;  // Controla si el parpadeo está activo
+let sonidoReproduciendo = false;  // Controla si el sonido está en reproducción
 
-    const minLengthPattern = /.{8,}/;
-    const uppercasePattern = /[A-Z]/;
-    const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/;
-    let isValid = true;
+function magiaFunction(){
+    
+    let adivinas = parseInt(document.getElementById("pienso").value);
+    let error = document.getElementById('error');
 
-    let errorMessage = '';
-
-    if (!minLengthPattern.test(passwordInput.value)) {
-        errorMessage += 'La contraseña debe tener al menos 8 caracteres.<br><br>';
+    if (isNaN(adivinas) || adivinas < 1 || adivinas > 100) {
+        error.textContent = "Introduce un número válido entre 1 y 100";
+        return;
     }
 
-    if (!uppercasePattern.test(passwordInput.value)) {
-        errorMessage += 'La contraseña debe tener al menos una letra mayúscula.<br><br>';
-    }
-
-    if (!specialCharPattern.test(passwordInput.value)) {
-        errorMessage += 'La contraseña debe tener al menos un carácter especial.<br>';
-    }
-
-    if (errorMessage) {
-        passwordError.innerHTML = errorMessage;
-        passwordError.style.display = 'block';
-        event.preventDefault();
-        isValid = false;
-        setTimeout(() => {passwordError.style.display = 'none'}, 4000)
-    } else {
-        passwordError.style.display = 'none';
-    }
-
-    const emailInput = document.getElementById('email');
-    const emailError = document.getElementById('emailError');
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!emailPattern.test(emailInput.value)) {
-        emailError.textContent = 'Por favor, introduce un correo electrónico válido.';
-        emailError.style.display = 'block';
-        emailInput.focus();
-        event.preventDefault();
-        isValid = false;
-        setTimeout(() => {emailError.style.display = 'none'}, 4000)
-    } else {
-        emailError.textContent = '';
-    }
-
-    if(isValid){
-        const validEmail = document.getElementById('email');
-        const validPassword = document.getElementById('pass');
-        
-        if (validEmail.value === "eventos18@gmail.com" && validPassword.value === "@Event321") {
-            // window.location.href = 'https://fleshmat.github.io/curriculum_page/';
-        } else {
-            event.preventDefault();
-            alert('Credenciales inválidas');
+    if(magia > adivinas){
+        error.textContent = "El número es mayor. ¡Sigue intentando!";
+        error.style.display = 'block';
+    }else{
+        if(magia < adivinas){
+            error.textContent = "El número es menor. ¡Sigue intentando!";
+            error.style.display = 'block';
+        }else{
+            if (magia == adivinas) {
+                clearInterval(temporizador);
+                error.textContent = "¡Felicidades! Adivinaste el número.";
+                detenerParpadeo();
+                detenerSonidoAlerta();
+            }else{
+                
+            }
         }
     }
     
-});
+    console.log('Magia es: '+magia);
+}
 
-document.getElementById('togglePassword').addEventListener('click', function () {
-    const passwordInput = document.getElementById('pass');
-    const togglePasswordButton = document.getElementById('togglePassword');
+// Función para iniciar el temporizador
+function iniciarCronometro() {
+    temporizador = setInterval(() => {
+        tiempoRestante--;
+        document.getElementById('tiempoRestante').textContent = tiempoRestante;
 
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        togglePasswordButton.textContent = 'Ocultar';
-    } else {
-        passwordInput.type = 'password';
-        togglePasswordButton.textContent = 'Mostrar';
-    }
-});
+        if (tiempoRestante <= 10 && !parpadeoActivo && !sonidoReproduciendo) {
+            activarParpadeo();  // Activar parpadeo cuando queden 10 segundos
+            reproducirSonidoAlerta();  // Reproducir el sonido cuando queden 10 segundos
+        }
 
-document.getElementById('loginGoogle').addEventListener('click', function() {
-    alert('Redirigiendo a Google para iniciar sesión.');
-});
+        if (tiempoRestante <= 0) {
+            clearInterval(temporizador);
+            document.getElementById('error').textContent = "¡Se acabó el tiempo! Has perdido.";
+            document.getElementById('botonMagico').disabled = true;
+            document.getElementById('pienso').disabled = true;
+            detenerSonidoAlerta();
+        }
+    }, 1000);
+}
 
-document.getElementById('loginFacebook').addEventListener('click', function() {
-    alert('Redirigiendo a Facebook para iniciar sesión.');
-});
+
+window.onload = iniciarCronometro();
+
+function activarParpadeo() {
+    const cronometro = document.getElementById('cronometro');
+    cronometro.classList.add('urgente');
+    cronometro.classList.add('parpadeo');
+    parpadeoActivo = true;
+}
+
+function detenerParpadeo() {
+    const cronometro = document.getElementById('cronometro');
+    cronometro.classList.remove('parpadeo');
+    cronometro.classList.remove('urgente');
+}
+
+function reproducirSonidoAlerta() {
+    const sonido = document.getElementById('alertaSonido');
+    sonido.play();
+    sonidoReproduciendo = true;
+}
+
+function detenerSonidoAlerta() {
+    const sonido = document.getElementById('alertaSonido');
+    sonido.pause();
+    sonido.currentTime = 0;
+    sonidoReproduciendo = false;
+}
