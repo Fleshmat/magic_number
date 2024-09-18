@@ -6,7 +6,8 @@
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="./styles/styles.css" >
     <link rel="icon" href="./img/favicon.png" type="image/png" sizes="64x64">
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <div class="login-container">
@@ -21,12 +22,15 @@
 
         <p class="signup-text">¿No tienes magia? <a href="#">Compra aquí</a></p>
 
-        <div id="cronometro" style="font-size: 20px; margin-top: 10px;">Tiempo restante: <span id="tiempoRestante">30</span> segundos</div>
+        <div id="cronometro" style="font-size: 20px; margin-top: 10px;">Tiempo restante: <span id="tiempoRestante">##</span> segundos</div>
 
         <audio id="alertaSonido" src="./audio/alerta.mp3" loop></audio>
     </div>
 
 
     <script src="./js/script.js"></script>
+    <script>
+        loadPage();
+    </script>
 </body>
 </html>

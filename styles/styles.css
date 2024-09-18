@@ -1,14 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    /* background-color: #f0f0f0; */
-    background-image: url(../img/fondo_evento.png);
-    /* background-repeat: no-repeat; */
-    background-size: 100% 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
 }
 
 .login-container {
@@ -33,7 +30,7 @@ label {
 }
 
 input[type="email"],
-input[type="password"], input[type="text"], input[type="number"] {
+input[type="password"], input[type="text"], input[type="number"], select {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
@@ -97,4 +94,9 @@ input[type="password"], input[type="text"], input[type="number"] {
     0% { background-color: red; }
     50% { background-color: yellow; }
     100% { background-color: red; }
+}
+
+.swal-div{
+    display: flex;
+    justify-content: center;
 }

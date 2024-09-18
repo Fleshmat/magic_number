@@ -1,5 +1,4 @@
 const magia = Math.floor(Math.random() * 100) + 1;
-let tiempoRestante = 20;
 let temporizador;  // Variable para almacenar el temporizador
 let parpadeoActivo = false;  // Controla si el parpadeo está activo
 let sonidoReproduciendo = false;  // Controla si el sonido está en reproducción
@@ -24,9 +23,14 @@ function magiaFunction(){
         }else{
             if (magia == adivinas) {
                 clearInterval(temporizador);
-                error.textContent = "¡Felicidades! Adivinaste el número.";
                 detenerParpadeo();
                 detenerSonidoAlerta();
+                Swal.fire({
+                    title: "¡Felicidades!",
+                    icon: "success",
+                    text: "Has encontrado el número mágico",
+                    heightAuto: false,
+                })
             }else{
                 
             }
@@ -37,17 +41,18 @@ function magiaFunction(){
 }
 
 // Función para iniciar el temporizador
-function iniciarCronometro() {
+function iniciarCronometro(tiempo) {
+    document.getElementById('tiempoRestante').textContent = tiempo;
     temporizador = setInterval(() => {
-        tiempoRestante--;
-        document.getElementById('tiempoRestante').textContent = tiempoRestante;
+        tiempo--;
+        document.getElementById('tiempoRestante').textContent = tiempo;
 
-        if (tiempoRestante <= 10 && !parpadeoActivo && !sonidoReproduciendo) {
+        if (tiempo <= 10 && !parpadeoActivo && !sonidoReproduciendo) {
             activarParpadeo();  // Activar parpadeo cuando queden 10 segundos
             reproducirSonidoAlerta();  // Reproducir el sonido cuando queden 10 segundos
         }
 
-        if (tiempoRestante <= 0) {
+        if (tiempo <= 0) {
             clearInterval(temporizador);
             document.getElementById('error').textContent = "¡Se acabó el tiempo! Has perdido.";
             document.getElementById('botonMagico').disabled = true;
@@ -58,7 +63,25 @@ function iniciarCronometro() {
 }
 
 
-window.onload = iniciarCronometro();
+async function loadPage(){
+    const a = await Swal.fire({
+        title: "Elegir dificultad",
+        icon: "info",
+        html: "<div class='swal-div'><select id='ss' placeholder='Seleccionar dificultad...' ><option value='50'>Facil</option><option value='30'>Normal</option><option value='20'>Dificil</option><option value='10'>Pesadilla</option></select></div>",
+        allowOutsideClick: false,
+        heightAuto: false,
+        allowEscapeKey: false,
+        confirmButtonText: "Comenzar",
+
+    })
+
+    if(a.isConfirmed){
+        let iv = document.getElementById('ss').value;
+        iniciarCronometro(iv);
+    }
+}
+
+
 
 function activarParpadeo() {
     const cronometro = document.getElementById('cronometro');
@@ -85,3 +108,12 @@ function detenerSonidoAlerta() {
     sonido.currentTime = 0;
     sonidoReproduciendo = false;
 }
+
+document.addEventListener('mousemove', (e) => {
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+    const angle = 45 + x * 90; // Aumenta el rango del ángulo
+    const color1 = `rgb(${Math.floor(255 * x)}, ${Math.floor(255 * y)}, 150)`;
+    const color2 = `rgb(${Math.floor(255 * (1 - x))}, ${Math.floor(255 * (1 - y))}, 200)`;
+    document.body.style.background = `linear-gradient(${angle}deg, ${color1}, ${color2})`;
+});
